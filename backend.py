@@ -11,6 +11,8 @@ from tensorflow import keras
 from twilio.rest import Client
 from pydantic import BaseModel
 
+import json
+
 sys.path.append("src")
 from audio_utils import extract_melspectrogram
 
@@ -43,6 +45,9 @@ THRESHOLD = 0.50
 MEAN, STD = -30.0, 15.0
 
 model = keras.models.load_model("src/sos_model.keras")
+with open("src/norm_stats.json") as f:
+    _stats = json.load(f)
+MEAN, STD = _stats["mean"], _stats["std"]
 buffer = np.zeros(int(DURATION * SR), dtype="float32")
 is_listening = False
 
