@@ -64,12 +64,23 @@ model.summary()
 
 early_stop = keras.callbacks.EarlyStopping(monitor="val_accuracy", patience=7, restore_best_weights=True)
 
+# ===== class weights לטיפול בחוסר איזון =====
+n_crying = np.sum(y_train[:, 0])
+n_background = np.sum(y_train[:, 1])
+total = len(y_train)
+class_weight = {
+    0: total / (2 * n_crying),      # crying
+    1: total / (2 * n_background),  # background
+}
+print(f"class weights: crying={class_weight[0]:.2f}, background={class_weight[1]:.2f}")
+
 history = model.fit(
     X_train, y_train,
     epochs=50,
     batch_size=32,
     validation_data=(X_test, y_test),
-    callbacks=[early_stop]
+    callbacks=[early_stop],
+    class_weight=class_weight
 )
 
 model.save("src/sos_model.keras")
