@@ -26,7 +26,7 @@ std  = float(X.std())
 X = (X - mean) / (std + 1e-8)
 X = X[..., np.newaxis]
 
-with open("src/norm_stats.json", "w") as f:
+with open("models/norm_stats.json", "w") as f:
     json.dump({"mean": mean, "std": std}, f)
 print(f"נרמול: mean={mean:.2f}, std={std:.2f} — נשמר ב-src/norm_stats.json")
 
@@ -83,7 +83,7 @@ history = model.fit(
     class_weight=class_weight
 )
 
-model.save("src/sos_model.keras")
+model.save("models/sos_model.keras")
 print("\nהמודל נשמר בהצלחה!")
 
 loss, acc = model.evaluate(X_test, y_test)
@@ -95,6 +95,6 @@ disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=CATEGORIES)
 disp.plot(cmap="Blues")
 plt.title("Confusion Matrix — Baby Monitor")
 plt.tight_layout()
-plt.savefig("src/training/confusion_matrix.png")
+plt.savefig("outputs/confusion_matrix.png")
 plt.show()
-print("Confusion Matrix נשמרה ב-src/training/confusion_matrix.png")
+print("Confusion Matrix נשמרה ב-outputs/confusion_matrix.png")

@@ -13,7 +13,7 @@ from pydantic import BaseModel
 
 import json
 
-sys.path.append("src")
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 from audio_utils import extract_melspectrogram
 
 load_dotenv()
@@ -44,8 +44,8 @@ STEP = 1
 THRESHOLD = 0.50
 MEAN, STD = -30.0, 15.0
 
-model = keras.models.load_model("src/sos_model.keras")
-with open("src/norm_stats.json") as f:
+model = keras.models.load_model("models/sos_model.keras")
+with open("models/norm_stats.json") as f:
     _stats = json.load(f)
 MEAN, STD = _stats["mean"], _stats["std"]
 buffer = np.zeros(int(DURATION * SR), dtype="float32")

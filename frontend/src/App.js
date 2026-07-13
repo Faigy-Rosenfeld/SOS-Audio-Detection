@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
 
-const API_KEY = "sos-secret-key-2024";
+const API_KEY = process.env.REACT_APP_API_KEY;
+const API_URL = process.env.REACT_APP_API_URL;
 const WS_URL = `ws://localhost:8080/ws?api_key=${API_KEY}`;
-const API_URL = "http://localhost:8080";
 
 const LABELS = {
   crying:     { text: "בכי תינוק", color: "#e67e22" },

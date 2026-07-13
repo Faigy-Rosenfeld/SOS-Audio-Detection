@@ -4,8 +4,8 @@ import sounddevice as sd
 from tensorflow import keras
 from audio_utils import extract_melspectrogram
 
-MODEL_PATH = "src/sos_model.keras"
-NORM_PATH  = "src/norm_stats.json"
+MODEL_PATH = "models/sos_model.keras"
+NORM_PATH  = "models/norm_stats.json"
 CATEGORIES = ["crying", "background"]
 SR         = 22050
 DURATION   = 2
