@@ -5,3 +5,8 @@ __pycache__/
 .ipynb_checkpoints/
 .env
 frontend/node_modules/
+
+# קבצי בדיקה זמניים
+test_cry.wav
+mic_test.wav
+audio/mic_test.wav
