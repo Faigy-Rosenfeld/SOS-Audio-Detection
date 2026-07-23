@@ -1,6 +1,6 @@
-# 👶 CRY-GUARD — שומר הבית
+# 👶 CRY-GUARD — Baby Monitor
 
-> זיהוי בכי תינוק חכם בזמן אמת · התרעה מיידית לטלפון ההורה
+> Real-time baby cry detection · Instant parent notification
 
 [![Python](https://img.shields.io/badge/Python-3.13-3776AB?style=flat&logo=python&logoColor=white)](https://python.org)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-FF6F00?style=flat&logo=tensorflow&logoColor=white)](https://tensorflow.org)
@@ -9,61 +9,61 @@
 
 ---
 
-## 📖 תיאור הפרויקט
+## 📖 Project Description
 
-CRY-GUARD היא מערכת AI שמאזינה ברציפות דרך המיקרופון, מזהה בכי תינוק בזמן אמת, ושולחת התרעה מיידית להורה — בממשק חי ובSMS.
+CRY-GUARD is an AI system that continuously listens through the microphone, detects baby crying in real time, and sends an instant alert to the parent — via a live UI and SMS.
 
-המערכת פותחה כפרויקט גמר בתחום **בינה מלאכותית** על ידי:
-- 👩‍💻 פייגי רוזנפלד
-- 👩‍💻 ציפי צוקרוב
-- 👩‍💻 אביטל
-
----
-
-## 📸 צילומי מסך
-
-### הממשק הראשי
-![הממשק הראשי](screenshots/the_system.png)
-
-### התרעה — בכי זוהה
-![התרעה פעילה](screenshots/alarm.png)
-
-### התינוק נרגע
-![התרעה כבויה](screenshots/finish_alarm.png)
+Developed as a final project in **Artificial Intelligence** by:
+- 👩‍💻 Faigy Rosenfeld
+- 👩‍💻 Tzipi Tsukrov
+- 👩‍💻 Avital Choen
 
 ---
 
-## ✨ תכונות עיקריות
+## 📸 Screenshots
 
-| תכונה | תיאור |
-|-------|--------|
-| 🎤 **האזנה בזמן אמת** | מיקרופון פעיל ברציפות עם ניתוח כל שנייה |
-| 🤖 **CNN מותאם** | מודל Deep Learning שאומן מאפס על אלפי דוגמאות |
-| 📊 **גרף גלים חי** | ויזואליזציה של עוצמת הקול בזמן אמת |
-| 🔔 **התרעה חכמה** | רק אחרי בכי רציף — לא על כל רחש |
-| 📱 **SMS דרך Twilio** | שליחת הודעה ישירות לטלפון ההורה |
-| 🌙 **מצב לילה** | סף 5 שניות בלילה / 10 שניות ביום |
-| 📋 **היסטוריית אירועים** | תיעוד כל האירועים עם שעה מדויקת |
+### Main Interface
+![Main Interface](screenshots/the_system.png)
+
+### Alert — Cry Detected
+![Active Alert](screenshots/alarm.png)
+
+### Baby Calmed Down
+![Alert Off](screenshots/finish_alarm.png)
 
 ---
 
-## 🏗️ ארכיטקטורת המערכת
+## ✨ Key Features
+
+| Feature | Description |
+|---------|-------------|
+| 🎤 **Real-time Listening** | Continuously active microphone with per-second analysis |
+| 🤖 **Custom CNN** | Deep Learning model trained from scratch on thousands of samples |
+| 📊 **Live Waveform Graph** | Real-time visualization of audio volume |
+| 🔔 **Smart Alerting** | Triggers only after sustained crying — not every noise |
+| 📱 **SMS via Twilio** | Sends a message directly to the parent's phone |
+| 🌙 **Night Mode** | 5-second threshold at night / 10 seconds during the day |
+| 📋 **Event History** | Logs all events with precise timestamps |
+
+---
+
+## 🏗️ System Architecture
 
 ```
-🎤 מיקרופון (22,050 Hz)
+🎤 Microphone (22,050 Hz)
       ↓
-📦 Rolling Buffer (2 שנ' / צעד 1 שנ')
+📦 Rolling Buffer (2s window / 1s step)
       ↓
 🎼 Mel Spectrogram (128 × T)
       ↓
 🤖 CNN Model (4 × Conv2D)
       ↓
-📈 סיווג: crying / background
+📈 Classification: crying / background
       ↓
 🔔 WebSocket → React UI + SMS
 ```
 
-### מודל ה-CNN
+### CNN Model
 
 ```
 Input(128, T, 1)
@@ -77,41 +77,41 @@ Dense(2)    → Softmax → [crying, background]
 
 ---
 
-## 📁 מבנה הפרויקט
+## 📁 Project Structure
 
 ```
 CRY-GUARD/
-├── backend/                # שרת FastAPI
-│   ├── main.py             # לוגיקה ראשית + WebSocket
-│   ├── episode_tracker.py  # מעקב אחר אירועי בכי
-│   ├── night_mode.py       # בקר מצב לילה/יום
-│   └── priority_scorer.py  # ניקוד דחיפות 0–100
-├── frontend/               # ממשק React
+├── backend/                # FastAPI server
+│   ├── main.py             # Core logic + WebSocket
+│   ├── episode_tracker.py  # Cry event lifecycle tracking
+│   ├── night_mode.py       # Day/night mode controller
+│   └── priority_scorer.py  # Priority scoring 0–100
+├── frontend/               # React UI
 │   └── src/
-│       ├── App.js          # קומפוננטה ראשית
-│       └── App.css         # עיצוב
+│       ├── App.js          # Main component
+│       └── App.css         # Styling
 ├── models/
-│   ├── cryguard_model.keras   # מודל מאומן
-│   └── norm_stats.json        # סטטיסטיקות נרמול
-├── audio/                  # קטעי שמע לבדיקה
-├── screenshots/            # צילומי מסך
-├── .env                    # משתני סביבה (לא מועלה ל-Git)
+│   ├── cryguard_model.keras   # Trained model
+│   └── norm_stats.json        # Normalization statistics
+├── audio/                  # Audio samples for testing
+├── screenshots/            # Screenshots
+├── .env                    # Environment variables (not committed to Git)
 ├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## 🚀 התקנה והפעלה
+## 🚀 Installation & Setup
 
-### דרישות מקדימות
+### Prerequisites
 
 - Python 3.10+
 - Node.js 18+
-- מיקרופון מחובר
-- חשבון Twilio (אופציונלי — לשליחת SMS)
+- Connected microphone
+- Twilio account (optional — for SMS)
 
-### 1. שכפול והתקנת Python
+### 1. Clone & Install Python Dependencies
 
 ```bash
 git clone https://github.com/your-repo/cry-guard.git
@@ -120,9 +120,9 @@ cd cry-guard
 pip install -r requirements.txt
 ```
 
-### 2. הגדרת משתני סביבה
+### 2. Configure Environment Variables
 
-צרי קובץ `.env` בתיקייה הראשית:
+Create a `.env` file in the root directory:
 
 ```env
 API_KEY=cryguard-secret-key-2024
@@ -131,15 +131,15 @@ TWILIO_AUTH_TOKEN=your_token
 TWILIO_FROM_NUMBER=+1234567890
 ```
 
-> ללא Twilio — המערכת עובדת מלא, רק ללא שליחת SMS.
+> Without Twilio — the system works fully, just without SMS sending.
 
-### 3. הפעלת Backend
+### 3. Start the Backend
 
 ```bash
 uvicorn backend.main:app --host 0.0.0.0 --port 8080
 ```
 
-### 4. הפעלת Frontend
+### 4. Start the Frontend
 
 ```bash
 cd frontend
@@ -147,40 +147,40 @@ npm install
 npm start
 ```
 
-פתחי דפדפן על `http://localhost:3000` 🎉
+Open your browser at `http://localhost:3000` 🎉
 
 ---
 
-## 🎛️ שימוש במערכת
+## 🎛️ How to Use
 
-1. לחצי על כפתור **▶** להפעלת ההאזנה
-2. המיקרופון מתחיל לעבוד — הגרף מציג את רמת הקול
-3. כשמזוהה בכי רציף — מופיעה **התרעה אדומה**
-4. SMS נשלח לטלפון שהוגדר (אם הופעל)
-5. כשהתינוק נרגע — מופיעה **הודעה ירוקה**
+1. Click the **▶** button to start listening
+2. The microphone activates — the graph displays the audio level
+3. When sustained crying is detected — a **red alert** appears
+4. An SMS is sent to the configured phone number (if enabled)
+5. When the baby calms down — a **green message** appears
 
 ---
 
-## 🧠 נתוני האימון
+## 🧠 Training Data
 
-המודל אומן על נתונים ממקורות מגוונים:
+The model was trained on data from multiple sources:
 
-| מקור | תוכן | כמות |
-|------|------|------|
-| Donate-a-Cry | בכי תינוקות | 457 קבצים |
-| ESC-50 | רעשי סביבה + בכי | 2,000 קבצים |
-| AudioSet | רעשי בית ורקע | מגוון |
-| MUSAN | מוזיקה, דיבור, רעש | מגוון |
+| Source | Content | Amount |
+|--------|---------|--------|
+| Donate-a-Cry | Baby crying | 457 files |
+| ESC-50 | Environmental sounds + crying | 2,000 files |
+| AudioSet | Home and background sounds | Various |
+| MUSAN | Music, speech, noise | Various |
 
-### Data Augmentation (על crying בלבד)
-- Gaussian Noise — סימולציית מיקרופונים שונים
-- Time Shift — תזמון שונה
-- Amplitude Scale — עוצמה 0.7–1.3
+### Data Augmentation (crying class only)
+- Gaussian Noise — simulates different microphones
+- Time Shift — varied timing
+- Amplitude Scale — volume 0.7–1.3
 - SpecAugment — Frequency + Time masking
 
 ---
 
-## 🛠️ טכנולוגיות
+## 🛠️ Technologies
 
 **Backend & AI**
 `Python` · `TensorFlow 2.x` · `Keras` · `librosa` · `FastAPI` · `WebSocket` · `sounddevice` · `Twilio`
@@ -188,20 +188,20 @@ npm start
 **Frontend**
 `React 18` · `JavaScript` · `Canvas API` · `WebSocket`
 
-**אימון**
+**Training**
 `Google Colab (GPU)` · `scikit-learn` · `numpy` · `matplotlib`
 
 ---
 
-## 👩‍💻 פיתוח עצמי
+## 👩‍💻 Custom Development
 
-כל הקוד הבא פותח מאפס בפרויקט זה:
-- ארכיטקטורת CNN המלאה
-- Priority Scorer — ניקוד 0–100 לפי משך, רציפות, תדירות וביטחון
-- Episode Tracker — מחזור חיי אירוע בכי
-- Night Mode Controller — סף התרעה דינמי
-- Backend FastAPI + WebSocket עם broadcast לכל הלקוחות
+All of the following was built from scratch in this project:
+- Full CNN architecture
+- Priority Scorer — 0–100 scoring based on duration, continuity, frequency, and confidence
+- Episode Tracker — cry event lifecycle management
+- Night Mode Controller — dynamic alert threshold
+- FastAPI Backend + WebSocket with broadcast to all clients
 
 ---
 
-*פרויקט גמר · מסלול בינה מלאכותית · 2024–2025*
+*Final Project · Artificial Intelligence Track · 2024–2025*
